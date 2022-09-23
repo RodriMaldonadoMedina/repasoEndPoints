@@ -81,8 +81,9 @@ def add_to_cart():
         user_id = user.id,
         product_id = product_id,
         product_name = product.name,
+        price = product.price,
         amount = amount
     )
     db.session.add(cart)
     db.session.commit()
-    return jsonify(cart.serialize)
+    return jsonify(cart.serialize()), 201

@@ -2,6 +2,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			message: null,
+
+			productList: [],
+
 			demo: [
 				{
 					title: "FIRST",
@@ -46,7 +49,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
-			}
+			},
+			cargarProductos: async() =>{
+					store = getStore();
+					try {
+					  // fetching data from the backend
+					  const resp = await fetch(process.env.BACKEND_URL + "/api/products");
+					  const data = await resp.json();
+					  setStore({ productList: [...store.productList, data.data]});
+					  // don't forget to return something, that is how the async resolves
+					  return true;
+					} catch (error) {
+					  console.log("Error al cargar productos", error);
+					}
+				  },
 		}
 	};
 };
