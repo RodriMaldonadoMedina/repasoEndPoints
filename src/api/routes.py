@@ -40,16 +40,17 @@ def register():
         email = data.get("email"),
         password = data.get("password"),
         is_active = True,
-        favorites = None
     )
     db.session.add(new_user)
     db.session.commit()
     return jsonify(new_user.serialize()), 200
 
 @api.route('/addfavorite', methods=['POST'])
+@jwt_required()
 def add_favorite():
     data = request.get_json()
-    user = User.query.get(data["user_id"])
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
     if user is None:
         return jsonify({"message": "El usuario no existe"}), 400
     product = Product.query.get(data["product_id"])
@@ -58,3 +59,30 @@ def add_favorite():
     user.favorites.append(product)
     db.session.commit()
     return jsonify({"message": "El producto se añadio correctamente"}), 200
+
+@api.route('/products', methods=['GET'])
+@jwt_required()
+def get_products():
+    products = Product.query.all()
+    serializer = list(map(lambda x: x.serialize(), products))
+    return jsonify({"data": serializer}), 200
+
+@api.route('/addtocart', methods=['POST'])
+@jwt_required()
+def add_to_cart():
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    amount = request.json.get("amount", None)
+    product_id = request.json.get("product_id", None)
+    product = Product.query.get(product_id)
+    if amount is None or product_id is None:
+        return jsonify({"message":"datos invalidos"}), 400
+    cart = Cart(
+        user_id = user.id,
+        product_id = product_id,
+        product_name = product.name,
+        amount = amount
+    )
+    db.session.add(cart)
+    db.session.commit()
+    return jsonify(cart.serialize)

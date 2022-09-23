@@ -43,7 +43,9 @@ class Cart(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable = False)
+    product_name = db.Column(db.String(40), unique = False, nullable = False)
     amount = db.Column(db.Integer, unique = False, nullable = False)
+    price = db.Column(db.String(10), unique = False, nullable = False)
 
     def serialize(self):
         return {
