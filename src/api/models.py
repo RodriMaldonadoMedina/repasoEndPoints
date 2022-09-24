@@ -34,14 +34,14 @@ class Product(db.Model):
     stock = db.Column(db.Integer, unique = False, nullable = True)
     carts = db.relationship('Cart', backref='product', lazy = True)
 
-
     def serialize(self):
         return {
             "id": self.id,
-            "nombre": self.name,
+            "name": self.name,
             "description": self.description,
             "category": self.category,
-            "price": self.price
+            "price": self.price,
+            "stock": self.stock
         }
 
 class Cart(db.Model):

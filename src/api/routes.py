@@ -53,7 +53,7 @@ def add_favorite():
     return jsonify({"message": "El producto se añadio correctamente"}), 200
 
 @api.route('/products', methods=['GET'])
-@jwt_required()
+#@jwt_required()
 def get_products():
     products = Product.query.all()
     serializer = list(map(lambda x: x.serialize(), products))
