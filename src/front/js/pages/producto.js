@@ -9,8 +9,6 @@ export const Producto = () => {
 		actions.cargarProductos();
 	},[])
 
-	console.log(store.productList[0])
-
 	return (
 		<div className="container">
 			<table className="table">

@@ -94,17 +94,36 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await resp.json();
 					if (resp.status === 401){
 						console.log(data.message);
-					} else 
+					} 
+					else 
 						if(resp.status === 400){
 						console.log("Invalid email or password format")
-				    	}
-					sessionStorage.setItem("token", data.token);
-					setStore({token: data.token});
+				    	} 
+						else{
+							sessionStorage.setItem("token", data.token);
+							setStore({token: data.token});
+						}
 				}
 				catch (error) {
 					console.log("Error al loguear el usuario", error);
 				}
 			},
+			logout: ()=>{
+				let store = getStore();
+				fetch(process.env.BACKEND_URL + "/api/logout", {
+				  method: "DELETE",
+				  headers: {
+					"Authorization": "Bearer " + store.token,
+					"Content-Type": "application/json",
+				  },
+				})
+				  .then(resp => resp.json())
+				  .then((data) => {
+					setStore({token: null});
+					sessionStorage.removeItem("token");
+				  })
+				  .catch(error=>console.log(error));
+			  }
 		}
 	};
 };
