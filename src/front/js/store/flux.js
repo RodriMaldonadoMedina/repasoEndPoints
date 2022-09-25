@@ -4,6 +4,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			message: null,
 
 			productList: [],
+			token: null,
 
 			demo: [
 				{
@@ -72,14 +73,38 @@ const getState = ({ getStore, getActions, setStore }) => {
 					  },
 					body: JSON.stringify(datos)
 					});
+					const data = await resp.json();
 					if (resp.status === 400)
-						alert("Usuario ya existente")
-					else alert("Usuario creado exitosamente")
+						console.log(data.message)
+					else console.log("Usuario creado exitosamente")
 				}
 				catch (error) {
 					console.log("Error al cargar el usuario", error);
 				}
-			}
+			},
+			loguearUsuario: async(datos) => {
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + "/api/login", {
+						method: "POST",
+						headers: {
+							"content-type": "application/json",
+						},
+						body: JSON.stringify(datos)
+					});
+					const data = await resp.json();
+					if (resp.status === 401){
+						console.log(data.message);
+					} else 
+						if(resp.status === 400){
+						console.log("Invalid email or password format")
+				    	}
+					sessionStorage.setItem("token", data.token);
+					setStore({token: data.token});
+				}
+				catch (error) {
+					console.log("Error al loguear el usuario", error);
+				}
+			},
 		}
 	};
 };

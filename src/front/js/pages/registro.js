@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const Registro = () => {
   const [datos, setDatos] = useState({});
-  const { actions } = useContext(Context)
+  const { actions } = useContext(Context);
   const nav = useNavigate();
 
   function inputChange(e) {
@@ -14,11 +14,10 @@ const Registro = () => {
 
   function datosCargados(e) {
     e.preventDefault();
-    console.log(datos);
     actions.cargarUsuario(datos);
-    /*setTimeout(()=>{
-      nav("/");
-    },500)*/
+    setTimeout(()=>{
+      nav("/products");
+    },500)
   }
 
   return (

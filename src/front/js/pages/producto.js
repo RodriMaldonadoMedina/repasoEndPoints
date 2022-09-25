@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/home.css";
 
-export const Home = () => {
+export const Producto = () => {
 	const { store, actions } = useContext(Context);
 
 	useEffect(()=>{
@@ -44,3 +44,5 @@ export const Home = () => {
 		</div>
 	);
 };
+
+export default Producto;

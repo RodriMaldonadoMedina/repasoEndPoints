@@ -24,7 +24,7 @@ def login():
 def register():
     data = request.get_json()
     user = User.query.filter_by(email = data.get("email")).first()
-    if data["email"] not in data or data["password"] not in data:
+    if len(data["email"]) == 0 or len(data["password"]) == 0:
         return jsonify({"message": "Faltan datos"}), 400
     if user is not None:
         return jsonify({"message": "El usuario ya existe"}), 400
