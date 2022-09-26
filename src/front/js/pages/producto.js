@@ -9,8 +9,14 @@ export const Producto = () => {
 		actions.cargarProductos();
 	},[])
 
+	const logout = () => {
+		actions.logout();
+		console.log("se deslogueo correctamente");
+	}
+
 	return (
 		<div className="container">
+			<button className="btn btn-danger my-3" onClick={logout}>Logout</button>
 			<table className="table">
 			<thead>
 				<tr>
