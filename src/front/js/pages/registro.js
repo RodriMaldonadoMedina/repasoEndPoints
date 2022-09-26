@@ -16,7 +16,7 @@ const Registro = () => {
     e.preventDefault();
     actions.cargarUsuario(datos);
     setTimeout(()=>{
-      nav("/products");
+      nav("/login");
     },500)
   }
 

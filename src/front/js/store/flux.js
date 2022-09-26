@@ -5,6 +5,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			productList: [],
 			token: null,
+			cart: [],
 
 			demo: [
 				{
@@ -55,7 +56,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 				let store = getStore();
 				try {
 					// fetching data from the backend
-					const resp = await fetch(process.env.BACKEND_URL + "/api/products");
+					const resp = await fetch(process.env.BACKEND_URL + "/api/products", {
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+							  "Authorization": 'Bearer '+ store.token
+						}});
 					const data = await resp.json();
 					setStore({ productList: [...store.productList, data.data]});
 					// don't forget to return something, that is how the async resolves
@@ -64,6 +70,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Error al cargar productos", error);
 				}
 			},
+			//cargarCarrito: 
 			cargarUsuario: async(datos) => {
 				try {
 					const resp = await fetch(process.env.BACKEND_URL + "/api/signup", {
